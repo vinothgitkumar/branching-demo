@@ -1,0 +1,32 @@
+pipeline:
+  ci_staging:
+    image: docker:20.10.8-alpine3.13
+    secrets: [ AIRFLOW_STAGING_KEY, GITHUB_TOKEN ]
+    commands:
+      - apk add make
+      - make ci_cd_staging astro_staging_key=$${AIRFLOW_STAGING_KEY} gh_token=$${GITHUB_TOKEN} build_number=${DRONE_BUILD_NUMBER}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: push
+      branch: [ staging ]
+  ci_prod:
+    image: docker:20.10.8-alpine3.13
+    secrets: [ AIRFLOW_PROD_KEY, GITHUB_TOKEN ]
+    commands:
+      - apk add make
+      - make ci_cd_prod astro_prod_key=$${AIRFLOW_PROD_KEY} gh_token=$${GITHUB_TOKEN} build_number=${DRONE_BUILD_NUMBER}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: push
+      branch: [ main ]
+  push_check:
+    image: docker:20.10.8-alpine3.13
+    commands:
+      - apk add make
+      - make check_code_format
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    when:
+      event: push

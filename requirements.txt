@@ -1,0 +1,9 @@
+awscli
+hvac
+pandas
+boto3
+requests
+databricks-cli
+flake8
+https://tardis.conde.io/download/tardis-0.1.3-py3-none-any.whl
+flatten_dict
