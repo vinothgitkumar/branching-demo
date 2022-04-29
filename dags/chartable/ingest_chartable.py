@@ -11,6 +11,7 @@ from plugins.utilities.slack_service import success_alert, failure_alert
 # ======================================
 # CONFIGURATION for CHARTABLE
 # ======================================
+#Facebook developer
 DAG_NAME = 'chartable_daily_ingest'
 
 DB_NOTEBOOK_PATH = ChartableConfig.chartable_notebook

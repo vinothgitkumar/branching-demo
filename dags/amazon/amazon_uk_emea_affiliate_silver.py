@@ -5,7 +5,7 @@ from plugins.config import AmazonUKEmeaAffiliatesConfig as config, AppConfig, Va
 from marshmellow.airflow.databricks import on_success_callback, \
     on_failure_callback, CondeDatabricksSubmitRunOperator
 from functools import partial
-
+#Facebook developer change
 SLACK_TITLE = "Amazon UK_EMEA Silver [Environment: {}]".format(AppConfig.environment.capitalize())
 DAG_ID = "Amazon Affiliate UK_Emea Silver"
 
