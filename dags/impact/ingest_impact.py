@@ -5,7 +5,7 @@ from plugins.config import ImpactAffiliatesConfig as config, AppConfig, VaultCon
 from marshmellow.airflow.databricks import on_success_callback, \
     on_failure_callback, CondeDatabricksSubmitRunOperator
 from functools import partial
-
+#DAG for IMPACT
 SLACK_TITLE = "Impact Silver [Environment: {}]".format(AppConfig.environment.capitalize())
 DAG_ID = "Impact Affiliate UK_Emea Silver"
 
