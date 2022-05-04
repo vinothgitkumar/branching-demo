@@ -8,7 +8,7 @@ from plugins.utilities.slack_service import success_alert, failure_alert
 test line to check the conflit error 
 
 # ======================================
-# CONFIGURATION for AMAZON test1
+# CONFIGURATION
 # ======================================
 
 ENV = AppConfig.environment
