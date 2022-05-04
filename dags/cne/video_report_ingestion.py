@@ -6,7 +6,7 @@ from plugins.utilities.databricks.DatabricksUtils import create_databricks_conne
 from plugins.utilities.clusters.cne_videos import get_cne_videos_configuration, get_cne_videos_lib
 from datetime import datetime, timedelta
 from plugins.utilities.slack_service import success_alert, failure_alert
-#DAG
+#DAG for cne
 
 default_args = {
     'owner': 'us_achoudha',
