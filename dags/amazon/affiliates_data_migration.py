@@ -5,8 +5,10 @@ from plugins.utilities.clusters.amazon_affiliates import get_cluster_config, get
 from plugins.config import AmazonAffiliatesConfig as config, AppConfig, VaultConfig
 from plugins.utilities.slack_service import success_alert, failure_alert
 
+test line to check the conflit error 
+
 # ======================================
-# CONFIGURATION
+# CONFIGURATION for AMAZON
 # ======================================
 
 ENV = AppConfig.environment
