@@ -38,7 +38,7 @@ jobs:
       if: always()
       with:
         status: ${{ job.status }}
-        notification_title: 'New pull-request ${{ github.event.pull_request.title }} ${{ github.event.pull_request.html_url }} has been raised agaist ${GITHUB_REF#refs/heads/} from branch ${{ github.event.pull_request.base.ref }}'
+        notification_title: 'New pull-request "${{ github.event.pull_request.title }} : ${{ github.event.pull_request.html_url }}" has been raised against Staging branch from ${{ github.event.pull_request.base.ref }} branch'
         message_format: 'Review and approve PR for staging deployment'
       env:  
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
