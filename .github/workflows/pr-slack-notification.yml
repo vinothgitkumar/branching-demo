@@ -34,7 +34,7 @@ jobs:
       if: always()
       with:
         status: Notification
-        notification_title: 'New pull-request ${{ github.event.pull_request.title }} ${{ github.event.pull_request.html_url }} has been raised agaist ${GITHUB_REF#refs/heads/} from branch ${{ github.event.pull_request.base.ref }}'
-        message_format: 'Review and approve PR for staging deployment'
+        notification_title: '{emoji} {status_message}'
+        message_format: 'New pull-request ${{ github.event.pull_request.title }} ${{ github.event.pull_request.html_url }} has been raised agaist ${GITHUB_REF#refs/heads/} from branch ${{ github.event.pull_request.base.ref }}. Review and approve PR for staging deployment'
       env:  
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
