@@ -8,6 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: shell run
+      run: |
+        date
+        ls -l
     #- name: Notify slack pr open
     #  env: 
     #    SLACK_WEBHOOK_URL : ${{ secrets.SLACK_WEBHOOK_URL }}
