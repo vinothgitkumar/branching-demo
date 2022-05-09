@@ -2,7 +2,7 @@ name: PR files
 on:
   push:
     branches:
-      - staging
+      - tstg
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
@@ -17,19 +17,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v14.6
-
       - name: Tag Name
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            #echo "$file was changed"
-            diff_result=`git diff ${from_branch}:$file ${to_branch}:$file`
-            if [ -z "$diff_result" ]
-            then
-                  echo "$file contents are same in both ${from_branch} branch and ${to_branch} branch"
-            else
-                  exit 1
-            fi 
-          done
+          git remote set-url origin https://${{ secrets.G_TOKEN }}@github.com/vinothgitkumar/branching-demo.git
+          git fetch --all
+          git checkout tstg
+          git pull origin tstg --tags
+          latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          major=0
+          minor=0
+          regex="([0-9]+).([0-9]+)"
+          if [[ $latest_tag_version =~ $regex ]]; then
+            major="${BASH_REMATCH[1]}"
+            minor="${BASH_REMATCH[2]}"
+          fi
+          minor=$(echo $minor + 1 | bc)
+          #latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          new_tag_version=`$from_branch-v${major}.${minor}"`
+          git tag $new_tag_version
+          git push origin tstg --tags
