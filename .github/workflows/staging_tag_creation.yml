@@ -33,6 +33,6 @@ jobs:
           fi
           minor=$(echo $minor + 1 | bc)
           #latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
-          new_tag_version=`$from_branch-v${major}.${minor}`
+          new_tag_version=`${from_branch}-v${major}.${minor}`
           git tag $new_tag_version
           git push origin tstg --tags
