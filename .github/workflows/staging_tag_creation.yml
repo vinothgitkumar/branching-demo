@@ -1,0 +1,35 @@
+name: PR files
+on:
+  push:
+    branches:
+      - staging
+
+env:
+  from_branch: ${{ github.event.pull_request.head.ref }}
+  to_branch: ${{ github.event.pull_request.base.ref }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v14.6
+
+      - name: Tag Name
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            #echo "$file was changed"
+            diff_result=`git diff ${from_branch}:$file ${to_branch}:$file`
+            if [ -z "$diff_result" ]
+            then
+                  echo "$file contents are same in both ${from_branch} branch and ${to_branch} branch"
+            else
+                  exit 1
+            fi 
+          done
