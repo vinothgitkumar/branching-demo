@@ -24,9 +24,9 @@ jobs:
           git checkout tstg
           git pull origin tstg --tags
           LATESTLOG=`$(git log -1 --pretty=%B)`
-          SOURCEBRANCH=`$(echo $LATESTLOG | awk -F '\\\\n' '{print $1}' |  awk -F '/' '{print $2}' | awk '{print $1}')`
+          #SOURCEBRANCH=`$(echo $LATESTLOG | awk -F '\\\\n' '{print $1}' |  awk -F '/' '{print $2}' | awk '{print $1}')`
           echo $LATESTLOG
-          echo $SOURCEBRANCH
+          #echo $SOURCEBRANCH
           from_branch_name=`echo "${from_branch}"`
           latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
           echo $latest_tag_version
