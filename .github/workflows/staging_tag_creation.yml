@@ -23,7 +23,8 @@ jobs:
           git fetch --all
           git checkout tstg
           git pull origin tstg --tags
-          latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          from_branch_name=`echo "${from_branch}"`
+          latest_tag_version=`git tag --sort version:refname | grep $from_branch_name | tail -n1 | cut -d '-' -f 3 | cut -c2-`
           major=0
           minor=0
           regex="([0-9]+).([0-9]+)"
@@ -33,6 +34,6 @@ jobs:
           fi
           minor=$(echo $minor + 1 | bc)
           #latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
-          new_tag_version=`${from_branch}-v${major}.${minor}`
+          new_tag_version=`${from_branch_name}-v${major}.${minor}`
           git tag $new_tag_version
           git push origin tstg --tags
