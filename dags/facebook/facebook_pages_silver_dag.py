@@ -11,7 +11,7 @@ from plugins.utilities.tardis_sensor import TardisDataStatusSensor
 from dags.facebook.utils import update_tardis_status, success_alert, failure_alert
 
 # ======================================
-# CONFIGURATION for FACEBOOK
+# CONFIGURATION for FACEBOOK testing1
 # ======================================
 
 default_args = {'owner': 'us_ochoudha',
