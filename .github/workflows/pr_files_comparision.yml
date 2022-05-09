@@ -1,7 +1,8 @@
 name: PR files
 on:
   #pull_request:
-    types: [opened, reopened]
+    branches:
+      - main
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
