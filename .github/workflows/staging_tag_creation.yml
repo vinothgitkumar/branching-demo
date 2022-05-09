@@ -24,7 +24,7 @@ jobs:
           git checkout tstg
           git pull origin tstg --tags
           from_branch_name=`echo "${from_branch}"`
-          latest_tag_version=`git tag --sort version:refname | grep $from_branch_name | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
           echo $latest_tag_version
           echo $from_branch_name
           #major=0
