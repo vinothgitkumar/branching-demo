@@ -1,8 +1,9 @@
 name: PR files
 on:
-  push:
+  pull_request:
     branches:
       - tstg
+    types: [closed]
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
@@ -10,6 +11,7 @@ env:
 
 jobs:
   build:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     name: Test changed-files
     steps:
@@ -23,14 +25,14 @@ jobs:
           git fetch --all
           git checkout tstg
           git pull origin tstg --tags
-          LATESTLOG=`$(git log -1 --pretty=%B)`
-          #SOURCEBRANCH=`$(echo $LATESTLOG | awk -F '\\\\n' '{print $1}' |  awk -F '/' '{print $2}' | awk '{print $1}')`
-          echo $LATESTLOG
-          #echo $SOURCEBRANCH
           from_branch_name=`echo "${from_branch}"`
+
+          echo "${from_branch}"
+          echo "{to_branch}"
+          echo $from_branch_name
+          
           latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
           echo $latest_tag_version
-          echo $from_branch_name
           #major=0
           #minor=0
           #regex="([0-9]+).([0-9]+)"
