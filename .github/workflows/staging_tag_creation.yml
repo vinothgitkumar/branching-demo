@@ -17,13 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          token: ${{ secrets.G_TOKEN }}
           fetch-depth: 0
 
       - name: Tag Name
         run: |
           git remote set-url origin https://${{ secrets.G_TOKEN }}@github.com/vinothgitkumar/branching-demo.git
-          remote=`git remote -v`
-          echo $remote
           git fetch --all
           git checkout tstg
           git pull origin tstg --tags
@@ -44,7 +43,5 @@ jobs:
           #latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
           new_tag=${from_branch_name}-v${major}.${minor}
           echo "New tag created is $new_tag"
-          remote1=`git remote -v`
-          echo $remote1
           git tag $new_tag
           git push origin tstg --tags
