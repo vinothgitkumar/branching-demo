@@ -40,7 +40,7 @@ jobs:
           fi
           minor=$(echo $minor + 1 | bc)
           #latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
-          new_tag_version=${from_branch_name}-v${major}.${minor}
-          echo $new_tag_version
-          git tag $new_tag_version
+          new_tag=${from_branch_name}-v${major}.${minor}
+          echo "New tag created is $new_tag"
+          git tag $new_tag
           git push origin tstg --tags
