@@ -30,28 +30,27 @@ jobs:
           echo "The PR is created from ${from_branch} branch and is merged with ${to_branch} branch successfully"
           tag_finding=`git tag --sort version:refname | grep "$from_branch_name"`
           if [[ -z "$tag_finding" ]]; then
-            ver=v1.0
-            first_tag=${from_branch_name}-${ver}
+            first_tag=${from_branch_name}-v1.0
             echo $first_tag
             git tag $first_tag
             git push origin tstg --tags
             echo "New tag created is $first_tag"
             exit 1
           fi
-          latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
-          latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
-          echo "Latest tag is $latest_tag_name"
-          echo $latest_tag_version
-          major=0
-          minor=0
-          regex="([0-9]+).([0-9]+)"
-          if [[ $latest_tag_version =~ $regex ]]; then
-            major="${BASH_REMATCH[1]}"
-            minor="${BASH_REMATCH[2]}"
-          fi
-          minor=$(echo $minor + 1 | bc)
-          #latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
-          new_tag=${from_branch_name}-v${major}.${minor}
-          git tag $new_tag
-          git push origin tstg --tags
-          echo "New tag created is $new_tag"
+          #latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
+          #latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          #echo "Latest tag is $latest_tag_name"
+          #echo $latest_tag_version
+          #major=0
+          #minor=0
+          #regex="([0-9]+).([0-9]+)"
+          #if [[ $latest_tag_version =~ $regex ]]; then
+          #  major="${BASH_REMATCH[1]}"
+          #  minor="${BASH_REMATCH[2]}"
+          #fi
+          #minor=$(echo $minor + 1 | bc)
+          ##latest_tag_version=`git tag --sort version:refname | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          #new_tag=${from_branch_name}-v${major}.${minor}
+          #git tag $new_tag
+          #git push origin tstg --tags
+          #echo "New tag created is $new_tag"
