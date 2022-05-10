@@ -26,11 +26,10 @@ jobs:
           git checkout tstg
           git pull origin tstg --tags
           from_branch_name=`echo "${from_branch}"`
-          
-          echo "${from_branch}"
-          echo "${to_branch}"
-          echo $from_branch_name
+          echo "The PR is created from ${from_branch} branch and is merged with ${to_branch} branch successfully"
+          latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
           latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
+          echo "Latest tag is $latest_tag_name"
           echo $latest_tag_version
           #major=0
           #minor=0
