@@ -1,9 +1,8 @@
 name: PR files
 on:
   pull_request:
-    branches:
-      - tstg
-    types: [closed]
+    types:
+      - closed
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
@@ -11,7 +10,7 @@ env:
 
 jobs:
   build:
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == 'true'
+    if: github.event.pull_request.base.ref == 'tstg' && github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     name: Test changed-files
     steps:
