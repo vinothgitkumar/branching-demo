@@ -53,4 +53,5 @@ jobs:
             git tag $new_tag
             git push origin tstg --tags
             echo "New tag created is $new_tag"
-          fi
+          fi;
+          EOF
