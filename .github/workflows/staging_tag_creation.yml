@@ -22,6 +22,8 @@ jobs:
       - name: Tag Name
         run: |
           git remote set-url origin https://${{ secrets.G_TOKEN }}@github.com/vinothgitkumar/branching-demo.git
+          remote=`git remote -v`
+          echo $remote
           git fetch --all
           git checkout tstg
           git pull origin tstg --tags
