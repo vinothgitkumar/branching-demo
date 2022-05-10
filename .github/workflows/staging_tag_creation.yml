@@ -1,6 +1,8 @@
 name: PR files
 on:
   pull_request:
+    branches:
+      - tstg
     types: [closed]
 
 env:
@@ -26,7 +28,7 @@ jobs:
           from_branch_name=`echo "${from_branch}"`
 
           echo "${from_branch}"
-          echo "{to_branch}"
+          echo "${to_branch}"
           echo $from_branch_name
 
           latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
