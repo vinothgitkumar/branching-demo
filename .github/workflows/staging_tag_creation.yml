@@ -29,7 +29,7 @@ jobs:
           from_branch_name=`echo "${from_branch}"`
           echo "The PR is created from ${from_branch} branch and is merged with ${to_branch} branch successfully"
           tag_finding=`git tag --sort version:refname | grep "$from_branch_name"`
-          if [ "$tag_finding" == "" ]
+          if [[ "$tag_finding" == "" ]]
           then
             echo "hi"
             #first_tag=${from_branch_name}-v1.0
