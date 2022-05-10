@@ -31,6 +31,7 @@ jobs:
           tag_finding=`git tag --sort version:refname | grep "$from_branch_name"`
           if [[ -z "$tag_finding" ]]; then
             first_tag=${from_branch_name}-v1.0
+            echo $first_tag
             git tag $first_tag
             git push origin tstg --tags
             echo "New tag created is $first_tag"
