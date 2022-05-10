@@ -30,7 +30,8 @@ jobs:
           echo "The PR is created from ${from_branch} branch and is merged with ${to_branch} branch successfully"
           tag_finding=`git tag --sort version:refname | grep "$from_branch_name"`
           if [[ -z "$tag_finding" ]]; then
-            first_tag=${from_branch_name}-v1.0
+            ver=v1.0
+            first_tag=${from_branch_name}-${ver}
             echo $first_tag
             git tag $first_tag
             git push origin tstg --tags
