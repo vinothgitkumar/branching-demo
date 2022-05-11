@@ -20,7 +20,7 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
           fetch-depth: 0
 
-      - name: Tag Name
+      - name: Staging Tag Creation
         run: |
           git remote set-url origin https://${{ secrets.G_TOKEN }}@github.com/vinothgitkumar/branching-demo.git
           git fetch --all
