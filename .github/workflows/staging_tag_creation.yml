@@ -36,9 +36,8 @@ jobs:
             first_tag=${from_branch_name}${tag_suffix}
             echo $first_tag
             git tag $first_tag
-            git push origin tstg --tags
+            git push origin --tags
             echo "New tag created is $first_tag"
-            exit 0
           else
             latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
             latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
