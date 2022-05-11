@@ -30,7 +30,7 @@ jobs:
           echo "The PR is created from $from_branch_name branch and is merged with ${to_branch} branch successfully"
           tag_find=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
           echo "The tags are $tag_find"
-          REGEX="^[a-zA-Z0-9\-.]+$"
+          REGEX="^[a-zA-Z0-9.-]+$"
           if [[ "$tag_find" =~ $REGEX ]]; then
             latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
             latest_tag_version=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1 | cut -d '-' -f 3 | cut -c2-`
