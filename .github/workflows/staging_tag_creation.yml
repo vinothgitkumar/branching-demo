@@ -28,13 +28,12 @@ jobs:
           git pull origin tstg --tags
           from_branch_name=`echo "${from_branch}"`
           echo "The PR is created from $from_branch_name branch and is merged with ${to_branch} branch successfully"
-          #tag_find=`git tag --sort version:refname | grep "$from_branch_name"`
-          git tag --sort version:refname | grep "$from_branch_name" > ./tag_find.txt
+          tag_find=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
           echo "The tags are $tag_find"
-          if [ -s tag_find.txt ]]; then
-            echo "not empty"
-          else
+          if [ -z "$tag_find" ]]; then
             echo "empty"
+          else
+            echo "not empty"
           fi
           #  tag_suffix="-v1.0"
           #  first_tag=${from_branch_name}${tag_suffix}
