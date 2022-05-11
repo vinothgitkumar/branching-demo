@@ -1,4 +1,4 @@
-name: PR files
+name: Staging Tag Creation
 on:
   pull_request:
     branches:
