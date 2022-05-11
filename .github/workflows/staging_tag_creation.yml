@@ -58,5 +58,6 @@ jobs:
             echo "New tag created is $first_tag"
           fi
 
-
-
+      - name: Staging Deployment
+        run: |
+          echo "deployment completed"
