@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Test changed-files
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v2
         with:
           token: ${{ secrets.G_TOKEN }}
           fetch-depth: 0
