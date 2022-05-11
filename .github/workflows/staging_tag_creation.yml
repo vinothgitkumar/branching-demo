@@ -32,7 +32,6 @@ jobs:
           echo "The tags are $tag_find"
           REGEX="^[a-zA-Z0-9\-.]+$"
           if [[ "$tag_find" =~ $REGEX ]]; then
-          if [ -z "$tag_find" ]]; then
             echo "alphanumeric"
           else
             echo "non empty line"
