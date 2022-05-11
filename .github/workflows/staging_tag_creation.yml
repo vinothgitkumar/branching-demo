@@ -32,7 +32,8 @@ jobs:
           echo "The tags are $tag_find"
           if [[ -z "${tag_find}" ]]; then
             echo "hi"
-            first_tag=${from_branch_name}-v1.0
+            tag_suffix="-v1.0"
+            first_tag=${from_branch_name}${tag_suffix}
             echo $first_tag
             git tag $first_tag
             git push origin tstg --tags
