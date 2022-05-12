@@ -33,6 +33,7 @@ jobs:
           git checkout tstg
           git pull origin tstg --tags
           latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
+          echo "latest_tag_name=$latest_tag_name" >> $GITHUB_ENV
           echo "Latest tag is $latest_tag_name"
           git checkout -b temp-${from_branch} $latest_tag_name
           new_branch=temp-${from_branch}
@@ -62,7 +63,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'Files Differ:'
-          message_format: 'Files in PR differs between ${{ github.event.pull_request.head.ref }} branch and ${{ github.event.pull_request.base.ref }} branch'
+          message_format: 'Files in PR differs between ${{ github.event.pull_request.head.ref }} branch and tstg branch's $latest_tag_name tag commit'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -72,6 +73,6 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'Files Not Differ:'
-          message_format: 'Files in PR not differs between ${{ github.event.pull_request.head.ref }} branch and ${{ github.event.pull_request.base.ref }} branch. Please approve the PR'
+          message_format: 'Files in PR not differs hence Please approve the PR'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
