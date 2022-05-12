@@ -23,6 +23,7 @@ jobs:
         uses: tj-actions/changed-files@v14.6
 
       - name: File comparision
+        id: comparision
         run: |
           git fetch --all
           git checkout tstg
@@ -44,10 +45,16 @@ jobs:
                   COUNT_VAR=$((COUNT_VAR+1))
             fi 
           done
+          if [[ $COUNT_VAR -eq 0 ]]; then
+            echo ::set-output name=differs::false
+          else
+            echo ::set-output name=differs::true
+          fi
+
           echo "COUNT_VAR=$COUNT_VAR" >> $GITHUB_ENV
 
       - name: Slack notification
-        if: $COUNT_VAR != 0
+        if: ${{ steps.comparision.outputs.differs == true }}
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
@@ -57,7 +64,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Slack notification
-        if: $COUNT_VAR == 0
+        if: ${{ steps.comparision.outputs.differs == false }}
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
