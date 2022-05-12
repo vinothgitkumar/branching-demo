@@ -25,11 +25,13 @@ jobs:
       - name: File comparision
         id: comparision
         run: |
+          git remote set-url origin https://${{ secrets.G_TOKEN }}@github.com/vinothgitkumar/branching-demo.git
           git fetch --all
-          git checkout tstg
-          git pull origin tstg --tags
           from_branch_name=`echo "${from_branch}"`
           to_branch_name=`echo "${to_branch}"`
+          git switch -c $from_branch_name origin/$from_branch_name
+          git checkout tstg
+          git pull origin tstg --tags
           latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
           echo "Latest tag is $latest_tag_name"
           git checkout -b temp-${from_branch} $latest_tag_name
