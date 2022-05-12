@@ -7,7 +7,7 @@ from plugins.config import AmazonAffiliatesConfig as config, AppConfig, VaultCon
 from plugins.utilities.slack_service import success_alert, failure_alert
 
 # ======================================
-# CONFIGURATION for amazon1
+# CONFIGURATION for amazon2
 # ======================================
 
 ENV = AppConfig.environment
