@@ -48,7 +48,7 @@ jobs:
                   COUNT_VAR=$((COUNT_VAR+1))
             fi 
           done
-          if [[ $COUNT_VAR -eq 0 ]]; then
+          if [[ $COUNT_VAR == "0" ]]; then
             echo ::set-output name=differs::false
           else
             echo ::set-output name=differs::true
@@ -57,7 +57,7 @@ jobs:
           echo "COUNT_VAR=$COUNT_VAR" >> $GITHUB_ENV
 
       - name: Slack notification
-        if: ${{ steps.comparision.outputs.differs == true }}
+        if: ${{ steps.comparision.outputs.differs == 'true' }}
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
@@ -67,7 +67,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Slack notification
-        if: ${{ steps.comparision.outputs.differs == false }}
+        if: ${{ steps.comparision.outputs.differs == 'false' }}
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
