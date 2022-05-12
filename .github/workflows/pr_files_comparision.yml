@@ -42,9 +42,9 @@ jobs:
             diff_result=`git diff $from_branch_name:$file $new_branch:$file`
             if [ -z "$diff_result" ]
             then
-                  echo "$file content is same in both ${from_branch} branch and same commit in ${to_branch} branch"
+                  echo "$file content is same in both $from_branch_name branch and same commit in $to_branch_name branch"
             else
-                  echo "$file content differs while comparing in ${from_branch} branch and ${to_branch} branch"
+                  echo "$file content differs while comparing in $from_branch_name branch and $to_branch_name branch"
                   COUNT_VAR=$((COUNT_VAR+1))
             fi 
           done
@@ -62,7 +62,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'Files Differ:'
-          message_format: 'Files in PR differs between ${from_branch} branch and ${to_branch} branch'
+          message_format: 'Files in PR differs between ${{ github.event.pull_request.head.ref }} branch and ${{ github.event.pull_request.base.ref }} branch'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -72,6 +72,6 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'Files Not Differ:'
-          message_format: 'Files in PR not differs between ${from_branch} branch and ${to_branch} branch. Please approve the PR'
+          message_format: 'Files in PR not differs between ${{ github.event.pull_request.head.ref }} branch and ${{ github.event.pull_request.base.ref }} branch. Please approve the PR'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
