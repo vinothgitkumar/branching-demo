@@ -33,7 +33,6 @@ jobs:
           git checkout tstg
           git pull origin tstg --tags
           latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
-          echo ::set-output name=tag_name::$(echo ${latest_tag_name})
           echo "Latest tag is $latest_tag_name"
           git checkout -b temp-${from_branch} $latest_tag_name
           new_branch=temp-${from_branch}
@@ -63,7 +62,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'Files Differ:'
-          message_format: 'Files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch's ${{ steps.comparision.outputs.tag_name }} tag commit'
+          message_format: 'Files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and ${{ github.event.pull_request.head.ref }}'s latest tag commit in tstg branch'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
