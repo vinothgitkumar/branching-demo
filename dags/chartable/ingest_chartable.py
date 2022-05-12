@@ -9,7 +9,7 @@ from plugins.utilities.clusters.chartable import get_chartable_configuration
 from plugins.utilities.slack_service import success_alert, failure_alert
 
 # ======================================
-# CONFIGURATION testing1
+# CONFIGURATION testing2
 # ======================================
 #Facebook developer
 DAG_NAME = 'chartable_daily_ingest'
