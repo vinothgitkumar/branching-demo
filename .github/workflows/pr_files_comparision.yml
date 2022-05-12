@@ -63,7 +63,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'Files Differ:'
-          message_format: 'Files in PR differs between ${{ github.event.pull_request.head.ref }} branch and tstg branch's ${{ latest_tag_name }} tag commit'
+          message_format: 'Files in PR differs between ${{ github.event.pull_request.head.ref }} branch and tstg branch's ${latest_tag_name} tag commit'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
