@@ -31,12 +31,13 @@ jobs:
           from_branch_name=`echo "${from_branch}"`
           to_branch_name=`echo "${to_branch}"`
           latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
+          echo "Latest tag is $latest_tag_name"
           git checkout -b temp-${from_branch} $latest_tag_name
           new_branch=temp-${from_branch}
           echo "New branch is $new_branch"
           COUNT_VAR=0
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            diff_result=`git diff ${from_branch}:$file ${new_branch}:$file`
+            diff_result=`git diff $from_branch_name:$file $new_branch:$file`
             if [ -z "$diff_result" ]
             then
                   echo "$file content is same in both ${from_branch} branch and same commit in ${to_branch} branch"
