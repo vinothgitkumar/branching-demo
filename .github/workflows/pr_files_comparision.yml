@@ -2,7 +2,7 @@ name: PR files
 on:
   pull_request:
     branches:
-      - main
+      - tprd
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
@@ -10,26 +10,58 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # windows-latest | macos-latest
+    runs-on: ubuntu-latest
     name: Test changed-files
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+          token: ${{ secrets.G_TOKEN }}
+          fetch-depth: 0
 
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v14.6
 
-      - name: List all changed files
+      - name: File comparision
         run: |
+          git fetch --all
+          git checkout tstg
+          git pull origin tstg --tags
+          from_branch_name=`echo "${from_branch}"`
+          to_branch_name=`echo "${to_branch}"`
+          latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
+          git checkout -b temp-${from_branch} $latest_tag_name
+          new_branch=temp-${from_branch}
+          echo "New branch is $new_branch"
+          COUNT_VAR=0
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            #echo "$file was changed"
-            diff_result=`git diff ${from_branch}:$file ${to_branch}:$file`
+            diff_result=`git diff ${from_branch}:$file ${new_branch}:$file`
             if [ -z "$diff_result" ]
             then
-                  echo "$file contents are same in both ${from_branch} branch and ${to_branch} branch"
+                  echo "$file content is same in both ${from_branch} branch and same commit in ${to_branch} branch"
             else
-                  exit 1
+                  echo "$file content differs while comparing in ${from_branch} branch and ${to_branch} branch"
+                  COUNT_VAR=$((COUNT_VAR+1))
             fi 
           done
+          echo "COUNT_VAR=$COUNT_VAR" >> $GITHUB_ENV
+
+      - name: Slack notification
+        if: $COUNT_VAR != 0
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Files Differ:'
+          message_format: 'Files in PR differs between ${from_branch} branch and ${to_branch} branch'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Slack notification
+        if: $COUNT_VAR == 0
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notification_title: 'Files Not Differ:'
+          message_format: 'Files in PR not differs between ${from_branch} branch and ${to_branch} branch. Please approve the PR'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
