@@ -3,6 +3,7 @@ from airflow import DAG
 from airflow.contrib.operators.databricks_operator import DatabricksSubmitRunOperator
 from plugins.utilities.clusters.amazon_affiliates import get_cluster_config, get_cluster_libs
 from plugins.config import AmazonAffiliatesConfig as config, AppConfig, VaultConfig
+
 from plugins.utilities.slack_service import success_alert, failure_alert
 
 # ======================================
