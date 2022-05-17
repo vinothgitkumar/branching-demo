@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - tprd
+    types: [opened]
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
@@ -33,29 +34,38 @@ jobs:
           git checkout tstg
           git pull origin tstg --tags
           latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
-          echo "Latest tag is $latest_tag_name"
-          echo ::set-output name=tag_name::$latest_tag_name
-          git checkout -b temp-${from_branch} $latest_tag_name
-          new_branch=temp-${from_branch}
-          echo "New branch is $new_branch"
-          COUNT_VAR=0
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            diff_result=`git diff $from_branch_name:$file $new_branch:$file`
-            if [ -z "$diff_result" ]
-            then
-                  echo "$file content is same in both $from_branch_name branch and same commit in $to_branch_name branch"
+          REGEX="^[a-zA-Z0-9.-]+$"
+          if [[ "$latest_tag_name" =~ $REGEX ]]; then
+            echo "Latest tag is $latest_tag_name"
+            git checkout -b temp-${from_branch} $latest_tag_name
+            new_branch=temp-${from_branch}
+            echo "New branch is $new_branch"
+            COUNT_VAR=0
+            for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+              diff_result=`git diff $from_branch_name:$file $new_branch:$file`
+              if [ -z "$diff_result" ]
+              then
+                    echo "$file content is same in both $from_branch_name branch and same commit in $to_branch_name branch"
+              else
+                    echo "$file content differs while comparing in $from_branch_name branch and $to_branch_name branch"
+                    COUNT_VAR=$((COUNT_VAR+1))
+              fi 
+            done
+            
+            if [[ $COUNT_VAR == "0" ]]; then
+              echo ::set-output name=differs::false
             else
-                  echo "$file content differs while comparing in $from_branch_name branch and $to_branch_name branch"
-                  COUNT_VAR=$((COUNT_VAR+1))
-            fi 
-          done
-          if [[ $COUNT_VAR == "0" ]]; then
-            echo ::set-output name=differs::false
+              echo ::set-output name=differs::true
+            fi
+  
+            echo "COUNT_VAR=$COUNT_VAR" >> $GITHUB_ENV
+
           else
-            echo ::set-output name=differs::true
+            echo ::set-output name=tagging::notag
+
           fi
 
-          echo "COUNT_VAR=$COUNT_VAR" >> $GITHUB_ENV
+
 
       - name: Slack notification
         if: ${{ steps.comparision.outputs.differs == 'true' }}
@@ -74,5 +84,15 @@ jobs:
           status: ${{ job.status }}
           notification_title: 'Files Not Differ:'
           message_format: 'Files in PR not differs hence Please approve the PR'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Slack notification
+        if: ${{ steps.comparision.outputs.tagging == 'notag' }}
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notification_title: 'New Feature Branch:'
+          message_format: 'No commits found on Staging branch from this feature branch hence please create PR against staging first'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
