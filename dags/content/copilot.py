@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from plugins.utilities.dbt import DbtUtils
 from plugins.config import AppConfig
 from plugins.utilities.slack_service import success_alert, failure_alert
-#content
+#content6
 SLACK_TITLE = "Copilot Data Silver + Gold [Env: {}]".format(AppConfig.environment.capitalize())
 SLACK_OWNER = "@dinmk"
 
