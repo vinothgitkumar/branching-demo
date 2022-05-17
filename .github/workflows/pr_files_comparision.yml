@@ -34,7 +34,7 @@ jobs:
           git pull origin tstg --tags
           latest_tag_name=`git tag --sort version:refname | grep "$from_branch_name" | tail -n1`
           REGEX="^[a-zA-Z0-9.-]+$"
-          if [[ "$tag_find" =~ $REGEX ]]; then
+          if [[ "$latest_tag_name" =~ $REGEX ]]; then
             echo "Latest tag is $latest_tag_name"
             git checkout -b temp-${from_branch} $latest_tag_name
             new_branch=temp-${from_branch}
