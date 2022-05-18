@@ -1,4 +1,4 @@
-name: PR files
+name: Compare files in PR
 on:
   pull_request:
     branches:
@@ -67,7 +67,7 @@ jobs:
 
 
 
-      - name: Slack notification
+      - name: Differed Files Slack notification
         if: ${{ steps.comparision.outputs.differs == 'true' }}
         uses: ravsamhq/notify-slack-action@v1
         with:
@@ -77,7 +77,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Slack notification
+      - name: No File Difference Slack notification
         if: ${{ steps.comparision.outputs.differs == 'false' }}
         uses: ravsamhq/notify-slack-action@v1
         with:
@@ -87,7 +87,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Slack notification
+      - name: New Branch Slack notification
         if: ${{ steps.comparision.outputs.tagging == 'notag' }}
         uses: ravsamhq/notify-slack-action@v1
         with:

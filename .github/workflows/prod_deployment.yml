@@ -1,0 +1,22 @@
+name: Production Deployment Workflow
+on:
+  pull_request:
+    branches:
+      - tprd
+    types: [closed]
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.G_TOKEN }}
+          fetch-depth: 0
+
+      - name: Production Deployment
+        run: |
+          echo "Prod deployment"
