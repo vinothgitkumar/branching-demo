@@ -5,6 +5,10 @@ on:
       - tprd
     types: [closed]
 
+env:
+  from_branch: ${{ github.event.pull_request.head.ref }}
+  to_branch: ${{ github.event.pull_request.base.ref }}
+
 jobs:
   build:
     if: github.event.pull_request.merged == true
@@ -18,5 +22,13 @@ jobs:
           fetch-depth: 0
 
       - name: Production Deployment
+        id: prod_deploy
         run: |
           echo "Prod deployment"
+
+      - name: Delete Production Branch
+        if: steps.prod_deploy.outcome == 'success'
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.G_TOKEN }}
+          branches: ${from_branch}
