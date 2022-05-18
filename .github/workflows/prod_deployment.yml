@@ -26,7 +26,7 @@ jobs:
         run: |
           echo "Prod deployment"
 
-      - name: Delete Production Branch
+      - name: Delete Feature Branch
         if: steps.prod_deploy.outcome == 'success'
         uses: dawidd6/action-delete-branch@v3
         with:
