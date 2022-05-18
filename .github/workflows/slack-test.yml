@@ -21,7 +21,7 @@ jobs:
       - name: Differed files attachment
         uses: MeilCli/slack-upload-file@v1
         with:
-          slack_token: ${{ secrets.SLACK_WEBHOOK_URL }}
+          slack_token: ${{ secrets.SLACK_TOKEN }}
           channels: ${{ secrets.SLACK_CHANNEL }}
           file_path: 'file_diff.txt'
           file_name: 'file_diff.txt'
