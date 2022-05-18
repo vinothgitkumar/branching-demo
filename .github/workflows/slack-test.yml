@@ -1,0 +1,30 @@
+name: Production Deployment Workflow
+on:
+  push:
+    branches:
+      - GDE-6655
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: create text file
+        run: |
+          ls -l >> file_diff.txt
+
+      - name: Differed files attachment
+        uses: MeilCli/slack-upload-file@v1
+        with:
+          slack_token: ${{ secrets.SLACK_WEBHOOK_URL }}
+          channels: ${{ secrets.SLACK_CHANNEL }}
+          file_path: 'file_diff.txt'
+          file_name: 'file_diff.txt'
+          file_type: 'text'
+          #initial_comment: 'post by slack-upload-file'
+          initial_comment: 'file content differs'
