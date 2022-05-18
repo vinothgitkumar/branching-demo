@@ -1,4 +1,4 @@
-name: Staging Tag Creation
+name: Staging - Tag Creation and Deployment
 on:
   pull_request:
     branches:
