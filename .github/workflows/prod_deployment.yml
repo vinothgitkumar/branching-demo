@@ -31,4 +31,4 @@ jobs:
         uses: dawidd6/action-delete-branch@v3
         with:
           github_token: ${{ secrets.G_TOKEN }}
-          branches: ${from_branch}
+          branches: ${{ github.event.pull_request.head.ref }}
