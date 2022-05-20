@@ -49,7 +49,7 @@ jobs:
               else
                     echo "$file content differs while comparing in $from_branch_name branch and $to_branch_name branch"
                     COUNT_VAR=$((COUNT_VAR+1))
-                    echo $file >> diff_files.txt
+                    echo "[ $file ], " >> diff_files.txt
               fi 
             done
             
@@ -57,6 +57,7 @@ jobs:
               echo ::set-output name=differs::false
             else
               echo ::set-output name=differs::true
+              echo "$(cat diff_files.txt)"
               echo "PRNT_FILES=`echo $(cat diff_files.txt)`" >> $GITHUB_ENV
             fi
   
@@ -74,8 +75,8 @@ jobs:
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
-          notification_title: 'Files Differ:'
-          message_format: 'Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit. ${{ env.PRNT_FILES }}'
+          notification_title: 'Files Differ: Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit.'
+          message_format: '${{ env.PRNT_FILES }}'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
