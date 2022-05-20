@@ -74,8 +74,8 @@ jobs:
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
-          notification_title: 'Files Differ:'
-          message_format: 'Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit. ${{ env.PRNT_FILES }}'
+          notification_title: 'Files Differ: Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit.'
+          message_format: '${{ env.PRNT_FILES }}'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
