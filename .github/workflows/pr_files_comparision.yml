@@ -57,6 +57,7 @@ jobs:
               echo ::set-output name=differs::false
             else
               echo ::set-output name=differs::true
+              echo "$(cat diff_files.txt)"
               echo "PRNT_FILES=`echo $(cat diff_files.txt)`" >> $GITHUB_ENV
             fi
   
