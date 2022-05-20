@@ -2,7 +2,7 @@ name: Compare files in PR
 on:
   pull_request:
     branches:
-      - tprd1
+      - tprd
     types: [opened]
 
 env:

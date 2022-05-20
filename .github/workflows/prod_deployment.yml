@@ -3,8 +3,7 @@ on:
   pull_request:
     branches:
       - tprd
-    #types: [closed]
-    types: [opened]
+    types: [closed]
 
 env:
   from_branch: ${{ github.event.pull_request.head.ref }}
@@ -12,7 +11,7 @@ env:
 
 jobs:
   build:
-    #if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     name: Test changed-files
     steps:
@@ -27,12 +26,12 @@ jobs:
         run: |
           echo "Prod deployment"
 
-      #- name: Delete Feature Branch
-      #  if: steps.prod_deploy.outcome == 'success'
-      #  uses: dawidd6/action-delete-branch@v3
-      #  with:
-      #    github_token: ${{ secrets.G_TOKEN }}
-      #    branches: ${{ github.event.pull_request.head.ref }}
+      - name: Delete Feature Branch
+        if: steps.prod_deploy.outcome == 'success'
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.G_TOKEN }}
+          branches: ${{ github.event.pull_request.head.ref }}
 
       - name: Delete Feature Branch's Tags in Github
         if: steps.prod_deploy.outcome == 'success'
@@ -47,7 +46,4 @@ jobs:
           for tags in $tag_list; do
             echo $tags
             git push --delete origin $tags
-            echo "above tag deleted"
           done
-          tag_list_final=`git tag --sort version:refname | grep "$from_branch_name"`
-          echo "Undeleted tags are $tag_list_final"
