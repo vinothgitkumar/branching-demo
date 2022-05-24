@@ -26,6 +26,7 @@ jobs:
       - name: File comparision
         id: comparision
         run: |
+          echo ${{ steps.changed-files.outputs.all_changed_files }}
           git remote set-url origin https://${{ secrets.G_TOKEN }}@github.com/vinothgitkumar/branching-demo.git
           git fetch --all
           from_branch_name=`echo "${from_branch}"`
