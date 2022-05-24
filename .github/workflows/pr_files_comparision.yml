@@ -63,7 +63,6 @@ jobs:
                   echo ::set-output name=newfile::yesnewfile
                   new_stmt="The $file is newly created in ${from_branch} hence it is not in the staging. Please create PR for staging first"
                   echo "PRNT_NEW=`echo $new_stmt`" >> $GITHUB_ENV
-                  exit 1
                 fi
               fi
               git checkout temp-${from_branch}
@@ -82,7 +81,7 @@ jobs:
           fi
 
       - name: Differed Files Slack notification
-        if: ${{ steps.comparision.outputs.differs == 'true' }}
+        if: ${{ (steps.comparision.outputs.differs == 'true') && (steps.comparision.outputs.newfile != 'yesnewfile') }}
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
@@ -92,7 +91,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: No File Difference Slack notification
-        if: ${{ steps.comparision.outputs.differs == 'false' }}
+        if: ${{ (steps.comparision.outputs.differs == 'false') && (steps.comparision.outputs.newfile != 'yesnewfile') }}
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
