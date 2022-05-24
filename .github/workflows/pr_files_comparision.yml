@@ -42,19 +42,31 @@ jobs:
             echo "New branch is $new_branch"
             COUNT_VAR=0
             for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-              diff_result=`git diff $from_branch_name:$file $new_branch:$file`
-              echo "error logging"
-              git diff $from_branch_name:$file $new_branch:$file 2> errors.txt
-              echo "Log contents are:"
-              cat errors.txt
-              if [ -z "$diff_result" ]
-              then
+              if [[ -f $file ]]; then
+                git checkout ${from_branch}
+
+                if [[ -f $file ]]; then
+                  diff_result=`git diff $from_branch_name:$file $new_branch:$file`
+
+                  if [ -z "$diff_result" ]; then
                     echo "$file content is same in both $from_branch_name branch and same commit in $to_branch_name branch"
-              else
+                  else
                     echo "$file content differs while comparing in $from_branch_name branch and $to_branch_name branch"
                     COUNT_VAR=$((COUNT_VAR+1))
                     echo "[ $file ], " >> diff_files.txt
+                  fi
+
+                else
+                  echo "the $file removed from from ${from_branch}"
+                fi
+
+              else
+                git checkout ${from_branch}
+                if [[ -f $file ]]; then
+                  echo "the $file is newly created in ${from_branch}"
+                fi
               fi
+              git checkout temp-${from_branch}
             done
             
             if [[ $COUNT_VAR == "0" ]]; then
@@ -69,10 +81,7 @@ jobs:
 
           else
             echo ::set-output name=tagging::notag
-
           fi
-
-
 
       - name: Differed Files Slack notification
         if: ${{ steps.comparision.outputs.differs == 'true' }}
