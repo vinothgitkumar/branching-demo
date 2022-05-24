@@ -42,7 +42,7 @@ jobs:
             echo "New branch is $new_branch"
             COUNT_VAR=0
             for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-              diff_result=`git diff $from_branch_name:$file $new_branch:$file` || :
+              diff_result=`git diff $from_branch_name:$file $new_branch:$file` || true
               echo "error logging"
               git diff $from_branch_name:$file $new_branch:$file 2> errors.txt
               echo "Log contents are:"
