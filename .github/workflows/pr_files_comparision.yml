@@ -106,7 +106,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'New Feature Branch:'
-          message_format: 'No commits found on Staging branch from this feature branch hence please create PR against staging first'
+          message_format: 'No commits and tags found on Staging branch related to this feature branch hence it is a new Feature branch, please create PR against Staging branch first'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
