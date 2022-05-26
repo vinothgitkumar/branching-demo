@@ -1,0 +1,28 @@
+name: PR review
+on:
+  pull_request:
+    branches:
+      - testing1
+    types: [opened]
+
+env:
+  from_branch: ${{ github.event.pull_request.head.ref }}
+  to_branch: ${{ github.event.pull_request.base.ref }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.G_TOKEN }}
+          fetch-depth: 0
+
+      - name: PR review
+        uses: nbaztec/add-pr-review-comment@v1
+        with:
+          message: "the file is newly created in feature branch hence create PR to staging first"
+          repo-token: ${{ secrets.G_TOKEN }}
+          repo-token-user-login: 'vinothgitkumar' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
