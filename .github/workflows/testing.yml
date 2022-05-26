@@ -23,7 +23,7 @@ jobs:
         uses: nbaztec/add-pr-review-comment@v1
         with:
           comments: |
-            [{"text":"the file is newly created in feature branch hence create PR to staging first"}]
+            [{"path":"","line":0,"text":"the file is newly created in feature branch hence create PR to staging first","side":"RIGHT"}]
           repo-token: ${{ secrets.G_TOKEN }}
           repo-token-user-login: 'vinothgitkumar' # The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
