@@ -90,6 +90,17 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+      - name: Differed Files PR review adding
+        if: ${{ (steps.comparision.outputs.differs == 'true') && (steps.comparision.outputs.newfile != 'yesnewfile') }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Files Differ: Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit.
+            ${{ env.PRNT_FILES }}
+          repo-token: ${{ secrets.G_TOKEN }}
+          repo-token-user-login: 'vinothgitkumar'
+          allow-repeats: false
+
       - name: No File Difference Slack notification
         if: ${{ (steps.comparision.outputs.differs == 'false') && (steps.comparision.outputs.newfile != 'yesnewfile') }}
         uses: ravsamhq/notify-slack-action@v1
@@ -99,6 +110,17 @@ jobs:
           message_format: 'Files in PR not differs hence Please approve the PR'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: No File Difference review adding
+        if: ${{ (steps.comparision.outputs.differs == 'false') && (steps.comparision.outputs.newfile != 'yesnewfile') }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Files Not Differ: 
+            Files in PR not differs hence Please approve the PR
+          repo-token: ${{ secrets.G_TOKEN }}
+          repo-token-user-login: 'vinothgitkumar'
+          allow-repeats: false
 
       - name: New Branch Slack notification
         if: ${{ steps.comparision.outputs.tagging == 'notag' }}
@@ -110,6 +132,17 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+      - name: New Branch review adding
+        if: ${{ steps.comparision.outputs.tagging == 'notag' }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            New Feature Branch: 
+            No commits and tags found on Staging branch related to this feature branch hence it is a new Feature branch, please create PR against Staging branch first
+          repo-token: ${{ secrets.G_TOKEN }}
+          repo-token-user-login: 'vinothgitkumar'
+          allow-repeats: false
+
       - name: New File Slack notification
         if: ${{ steps.comparision.outputs.newfile == 'yesnewfile' }}
         uses: ravsamhq/notify-slack-action@v1
@@ -119,3 +152,14 @@ jobs:
           message_format: '${{ env.PRNT_NEW }}'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: New File review adding
+        if: ${{ steps.comparision.outputs.newfile == 'yesnewfile' }}
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            New File:
+            ${{ env.PRNT_NEW }}
+          repo-token: ${{ secrets.G_TOKEN }}
+          repo-token-user-login: 'vinothgitkumar'
+          allow-repeats: false
