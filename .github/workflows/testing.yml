@@ -19,11 +19,10 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
           fetch-depth: 0
 
-      - name: PR review
-        uses: nbaztec/add-pr-review-comment@v1
+      - name: PR review comment
+        uses: mshick/add-pr-comment@v1
         with:
-          comments: |
-            [{"path":"","line":0,"text":"the file is newly created in feature branch hence create PR to staging first","side":"RIGHT"}]
+          message: The file is newly created in feature branch hence create PR to staging first
           repo-token: ${{ secrets.G_TOKEN }}
-          repo-token-user-login: 'vinothgitkumar' # The user.login for temporary GitHub tokens
+          repo-token-user-login: 'vinothgitkumar' #'github-actions[bot]' ; The user.login for temporary GitHub tokens
           allow-repeats: false # This is the default
