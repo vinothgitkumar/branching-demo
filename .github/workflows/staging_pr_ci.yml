@@ -1,4 +1,4 @@
-name: Staging - Tag Creation and Deployment
+name: Staging - Pylinting
 on:
   pull_request:
     branches:
