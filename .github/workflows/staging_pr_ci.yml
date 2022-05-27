@@ -20,3 +20,7 @@ jobs:
         run: |
           pip install pylint-airflow
           pylint --load-plugins=pylint_airflow ./dags/**/*.py
+
+      - name: Linelint
+        uses: fernandrone/linelint@master
+        id: linelint
