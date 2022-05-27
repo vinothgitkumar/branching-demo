@@ -10,6 +10,10 @@ rules:
     # will be ignored only by this rule
     ignore:
       - README.md
+      - .github/workflows/pr_files_comparision.yml
+      - .github/workflows/staging_pr_ci.yml
+      - .github/workflows/prod_deployment.yml
+      - .github/workflows/staging_tag_creation.yml
 
     # if true also checks if file ends in a single newline character
     single-new-line: true
