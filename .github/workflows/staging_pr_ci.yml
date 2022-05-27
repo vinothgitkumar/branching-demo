@@ -22,5 +22,5 @@ jobs:
           pylint --load-plugins=pylint_airflow ./dags/**/*.py
 
       - name: Linelint
-        uses: actions/linelint@master
+        uses: fernandrone/linelint@master
         id: linelint
