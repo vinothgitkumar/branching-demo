@@ -1,0 +1,11 @@
+[FORMAT]
+max-line-length=240
+
+[MESSAGES CONTROL]
+disable=imports
+
+[OUTPUT]
+output-format=json:output.json,colorized
+
+[THRESHOLD]
+fail-under=0

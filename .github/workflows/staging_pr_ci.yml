@@ -1,0 +1,22 @@
+name: Staging - Pylinting
+on:
+  pull_request:
+    branches:
+      - tstg
+    types: [opened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Test changed-files
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.G_TOKEN }}
+          fetch-depth: 0
+
+      - name: Pylint code Analysis for DAG's
+        run: |
+          pip install pylint-airflow
+          pylint --load-plugins=pylint_airflow ./dags/**/*.py

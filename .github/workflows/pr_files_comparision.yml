@@ -19,6 +19,11 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
           fetch-depth: 0
 
+      - name: Pylint code Analysis for DAG's
+        run: |
+          pip install pylint-airflow
+          pylint --load-plugins=pylint_airflow ./dags/**/*.py
+          
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v14.6
