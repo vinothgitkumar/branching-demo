@@ -14,6 +14,8 @@ rules:
       - .github/workflows/staging_pr_ci.yml
       - .github/workflows/prod_deployment.yml
       - .github/workflows/staging_tag_creation.yml
+      - .linelint.yml
+      - .pylintrc
 
     # if true also checks if file ends in a single newline character
-    single-new-line: true
+    single-new-line: false

@@ -66,7 +66,7 @@ jobs:
                 git checkout ${from_branch}
                 if [[ -f $file ]]; then
                   echo ::set-output name=newfile::yesnewfile
-                  new_stmt="The $file is newly created in ${from_branch} hence it is not in the staging. Please create PR for staging first"
+                  new_stmt="The $file file is newly created in ${from_branch} branch hence it is not in the staging. Please create PR for staging first"
                   echo "PRNT_NEW=`echo $new_stmt`" >> $GITHUB_ENV
                 fi
               fi
@@ -90,7 +90,7 @@ jobs:
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
-          notification_title: 'Files Differ: Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit.'
+          notification_title: 'Files Differ: Contents of below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and Staging branch ${{ steps.comparision.outputs.tag_name }} tag commit.'
           message_format: '${{ env.PRNT_FILES }}'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -100,7 +100,7 @@ jobs:
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            Files Differ: Below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and tstg branch ${{ steps.comparision.outputs.tag_name }} tag commit.
+            Files Differ: Contents of below files in PR differs while comparing it with ${{ github.event.pull_request.head.ref }} branch and Staging branch ${{ steps.comparision.outputs.tag_name }} tag commit.
             ${{ env.PRNT_FILES }}
           repo-token: ${{ secrets.G_TOKEN }}
           repo-token-user-login: 'vinothgitkumar'
@@ -111,8 +111,8 @@ jobs:
         uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
-          notification_title: 'Files Not Differ:'
-          message_format: 'Files in PR not differs hence Please approve the PR'
+          notification_title: 'Files Are Not Differs:'
+          message_format: 'Content of files in PR not differs hence Please approve this PR'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -121,8 +121,8 @@ jobs:
         uses: mshick/add-pr-comment@v1
         with:
           message: |
-            Files Not Differ: 
-            Files in PR not differs hence Please approve the PR
+            Files Are Not Differs: 
+            Content of files in PR not differs hence Please approve this PR
           repo-token: ${{ secrets.G_TOKEN }}
           repo-token-user-login: 'vinothgitkumar'
           allow-repeats: false
@@ -133,7 +133,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: 'New Feature Branch:'
-          message_format: 'No commits and tags found on Staging branch related to this feature branch hence it is a new Feature branch, please create PR against Staging branch first'
+          message_format: 'No commits and tags of ${{ github.event.pull_request.head.ref }} branch found on Staging branch hence it is a new Feature branch, please create PR against Staging branch first'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
@@ -143,7 +143,7 @@ jobs:
         with:
           message: |
             New Feature Branch: 
-            No commits and tags found on Staging branch related to this feature branch hence it is a new Feature branch, please create PR against Staging branch first
+            No commits and tags of ${{ github.event.pull_request.head.ref }} branch found on Staging branch hence it is a new Feature branch, please create PR against Staging branch first
           repo-token: ${{ secrets.G_TOKEN }}
           repo-token-user-login: 'vinothgitkumar'
           allow-repeats: false
